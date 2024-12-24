@@ -1,0 +1,151 @@
+@import url('https://fonts.googleapis.com/css2?family=Arvo:ital,wght@0,400;0,700;1,400;1,700&family=Comic+Neue:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=Lora:ital,wght@0,400..700;1,400..700&family=PT+Sans:ital,wght@0,400;0,700;1,400;1,700&family=Pacifico&family=Righteous&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+:root{
+    --main-color:#394049;
+--seconadry-color:#E65C8B;
+}
+body{
+    font-family: "Arvo", serif;
+background-color:#2C2C2C;
+}
+.header{
+    color: #FFFFFF;
+    font-style: italic;
+}
+h1{
+    font-size: 60px;
+    font-weight: bold;
+    position: relative;
+    padding-right: 10px;
+    padding-bottom: 10px;
+}
+h1::after{
+    margin-left: 10px;
+    content: '';
+    position: absolute;
+    width: 70px;
+    height: 3px;
+top: 50%;
+background-color: #ffffff;
+}
+h1::before{
+    margin-left: 10px;
+    content: '';
+    position: absolute;
+    width: 70px;
+    height: 3px;
+    left: 30%;
+top: 70%;
+background-color: #ffffff;
+}
+.icon-head{
+    position: relative;
+}
+.icon-head::after{
+    margin-left: 15px;
+    content: '';
+    position: absolute;
+    width: 200px;
+    height: 2px;
+top: 50%;
+background-color: #ffffff;
+}
+.icon-head::before{
+    margin-left: 10px;
+    content: '';
+    position: absolute;
+    width: 200px;
+    height: 2px;
+    left: 30%;
+
+top: 50%;
+background-color: #ffffff;
+}
+
+
+ul{
+    list-style:none ;
+    border-bottom: 1px solid rgb(37, 32, 32);
+
+}
+.box-todo{
+    background-color: var(--main-color);
+}
+nav li{
+    color:#ffff;
+    transition: .2s;
+}
+input{
+    border-color: rgb(37, 32, 32) !important;
+    background-color: #D9D9D9 !important;
+    color: #2C2C2C!important;
+}
+.form-control:focus{
+    border-color: transparent;
+    box-shadow: none;
+}
+.add-btn {
+    padding: 5px 10px;
+    color: #fff;
+    border-color: transparent;
+    border-radius: 10px;
+    background-color: #4F4F4F;
+}
+.todo-content{
+    border-bottom: 2px solid #323435 ;
+}
+.text-name h3{
+    cursor: pointer;
+    padding-bottom: 5px;
+    position: relative;
+}
+.text-name h3::after{
+content: 'Click To Completed';
+position: absolute;
+top: 100%;
+left: 0;
+background-color: #000;
+color: #fff;
+padding: 10px;
+border-radius: 10px;
+font-size: 8px;
+pointer-events: none;
+opacity: 0;
+transition:.5s;
+}
+.text-name h3:hover::after{
+    opacity: 1;
+
+}
+#delete:hover{
+cursor: pointer;
+}
+.loader {
+    width: 48px;
+    height: 48px;
+    border: 5px solid #FFF;
+    border-bottom-color: #FF3D00;
+    border-radius: 50%;
+    display: inline-block;
+    box-sizing: border-box;
+    animation: rotation 1s linear infinite;
+    }
+
+    @keyframes rotation {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+    } 
+    .loading{
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0 ,0 , 0 ,.6);
+display: flex;
+align-items: center;
+justify-content: center;
+    }
