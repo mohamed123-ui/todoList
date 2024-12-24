@@ -81,6 +81,8 @@ function displayTodoO() {
   document.getElementById("rowData").innerHTML = content;
 }
 async function deleteTodo(id) {
+              toastr.success("deleted successfully");
+
   Swal.fire({
     title: "Are you sure?",
     text: "You won't be able to revert this!",
@@ -157,7 +159,6 @@ async function markCompleted(id) {
               icon: "success",
             });
             await getAllTodo();
-            toastr.success("deleted successfully");
           }
         }
       } catch (error) {
