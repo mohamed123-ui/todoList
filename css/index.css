@@ -49,17 +49,7 @@ background-color: #ffffff;
 top: 50%;
 background-color: #ffffff;
 }
-.icon-head::before{
-    margin-left: 10px;
-    content: '';
-    position: absolute;
-    width: 200px;
-    height: 2px;
-    left: 30%;
 
-top: 50%;
-background-color: #ffffff;
-}
 
 
 ul{
@@ -98,20 +88,7 @@ input{
     padding-bottom: 5px;
     position: relative;
 }
-.text-name h3::after{
-content: 'Click To Completed';
-position: absolute;
-top: 100%;
-left: 0;
-background-color: #000;
-color: #fff;
-padding: 10px;
-border-radius: 10px;
-font-size: 8px;
-pointer-events: none;
-opacity: 0;
-transition:.5s;
-}
+
 .text-name h3:hover::after{
     opacity: 1;
 
