@@ -1,88 +1,60 @@
 const Add = document.getElementById("add");
 const addInput = document.querySelector("input");
 const loading = document.querySelector(".loading");
-let allTodo = [];
+const rowData = document.getElementById("rowData");
+
+let allTodo = JSON.parse(localStorage.getItem("todos")) || [];
+
+displayTodoO();
+
 Add.addEventListener("click", () => {
-  addTodo();
-  clear();
-});
-async function addTodo() {
-  loading.classList.remove("d-none");
   if (!addInput.value.trim()) {
     alert("Please enter a valid task");
     return;
   }
+  loading.classList.remove("d-none");
+
   const todo = {
-    title: addInput.value,
-    apiKey: "676acfa960a208ee1fdeb658",
+    id: Date.now(),
+    title: addInput.value.trim(),
+    completed: false,
   };
-  const object = {
-    method: "post",
-    body: JSON.stringify(todo),
-    headers: { "Content-Type": "application/json" },
-  };
-  try {
-    const response = await fetch(
-      "https://todos.routemisr.com/api/v1/todos",
-      object
-    );
-    if (response.ok) {
-      const data = await response.json();
-      console.log(data);
-      getAllTodo();
-      loading.classList.add("d-none");
-    }
-  } catch (error) {
-    alert("get data invalide");
-  }
-}
-async function getAllTodo() {
-  try {
-    const response = await fetch(
-      "https://todos.routemisr.com/api/v1/todos/676acfa960a208ee1fdeb658"
-    );
-    if (response.ok) {
-      const data = await response.json();
-      allTodo = data.todos;
-      displayTodoO();
-      console.log("all todo is", allTodo);
-    }
-  } catch (error) {
-    alert("data invalide");
-  }
-}
-function clear() {
+
+  allTodo.push(todo);
+  localStorage.setItem("todos", JSON.stringify(allTodo));
+
   addInput.value = "";
-}
+  displayTodoO();
+  loading.classList.add("d-none");
+});
+
 function displayTodoO() {
   let content = "";
-  for (let i = 0; i < allTodo.length; i++) {
-    content += ` <div class="d-flex justify-content-between align-content-center">
-        <div class="text-name text-white"><h3 onclick="markCompleted('${
-          allTodo[i]._id
-        }')" style=" ${
-      allTodo[i].completed ? "text-decoration: line-through;" : ""
-    }">
-      ${allTodo[i].title}
-    </h3></div>
-    <div class="icons ">
-    ${
-      allTodo[i].completed
-        ? ' <span><i class="fa-regular fa-circle-check pe-4 fs-5" style="color: #74C0FC;" id="check"></i></span>'
-        : ""
-    }
-        <span><i onclick="deleteTodo('${
-          allTodo[i]._id
-        }');" class="fa-solid fa-trash fs-5" style="color: #B197FC;" id="delete"></i></span>
-    </div>
-    </div>
-        `;
-  }
-  document.getElementById("rowData").innerHTML = content;
-}
-async function deleteTodo(id) {
-              toastr.success("deleted successfully");
 
+  for (let todo of allTodo) {
+    content += `
+      <div class="d-flex justify-content-between align-content-center mb-3">
+        <div class="text-name text-white">
+          <h3 onclick="markCompleted(${todo.id})" style="${todo.completed ? 'text-decoration: line-through;' : ''}">
+            ${todo.title}
+          </h3>
+        </div>
+        <div class="icons">
+          ${
+            todo.completed
+              ? '<span><i class="fa-regular fa-circle-check pe-4 fs-5" style="color: #74C0FC;" id="check"></i></span>'
+              : ''
+          }
+          <span><i onclick="deleteTodo(${todo.id})" class="fa-solid fa-trash fs-5" style="color: #B197FC;" id="delete"></i></span>
+        </div>
+      </div>
+    `;
+  }
+
+  rowData.innerHTML = content;
+}
+
+function deleteTodo(id) {
   Swal.fire({
     title: "Are you sure?",
     text: "You won't be able to revert this!",
@@ -91,79 +63,34 @@ async function deleteTodo(id) {
     confirmButtonColor: "#3085d6",
     cancelButtonColor: "#d33",
     confirmButtonText: "Yes, delete it!",
-  }).then(async (result) => {
+  }).then((result) => {
     if (result.isConfirmed) {
-      loading.classList.remove("d-none");
-
-      const todoData = {
-        todoId: id,
-      };
-      const option = {
-        method: "DELETE",
-        body: JSON.stringify(todoData),
-        headers: { "Content-Type": "application/json" },
-      };
-      try {
-        const response = await fetch(
-          "https://todos.routemisr.com/api/v1/todos",
-          option
-        );
-        if (response.ok) {
-          let data = await response.json();
-          if (data.message === "success") {
-            Swal.fire({
-              title: "Deleted!",
-              text: "Your  has been deleted.",
-              icon: "success",
-            });
-          }
-          await getAllTodo();
-          loading.classList.add("d-none");
-        }
-      } catch (error) {
-        alert("data delete invalide");
-      }
+      allTodo = allTodo.filter((todo) => todo.id !== id);
+      localStorage.setItem("todos", JSON.stringify(allTodo));
+      displayTodoO();
+      toastr.success("Deleted successfully");
+      Swal.fire("Deleted!", "Your task has been deleted.", "success");
     }
   });
 }
 
-async function markCompleted(id) {
+function markCompleted(id) {
   Swal.fire({
     title: "Are you sure?",
-    text: "You won't be able to revert this!",
+    text: "Mark as completed?",
     icon: "warning",
     showCancelButton: true,
     confirmButtonColor: "#3085d6",
     cancelButtonColor: "#d33",
-    confirmButtonText: "Yes, it!",
-  }).then(async (result) => {
+    confirmButtonText: "Yes, complete it!",
+  }).then((result) => {
     if (result.isConfirmed) {
-      const todoData = {
-        todoId: id,
-      };
-      const option = {
-        method: "PUT",
-        body: JSON.stringify(todoData),
-        headers: { "Content-Type": "application/json" },
-      };
-      try {
-        const response = await fetch(
-          "https://todos.routemisr.com/api/v1/todos",
-          option
-        );
-        if (response.ok) {
-          let data = await response.json();
-          if (data.message === "success") {
-            Swal.fire({
-              title: "completed!",
-              icon: "success",
-            });
-            await getAllTodo();
-          }
-        }
-      } catch (error) {
-        alert("data markCompleted is invalide");
-      }
+      allTodo = allTodo.map((todo) =>
+        todo.id === id ? { ...todo, completed: true } : todo
+      );
+      localStorage.setItem("todos", JSON.stringify(allTodo));
+      displayTodoO();
+      Swal.fire("Completed!", "", "success");
     }
   });
 }

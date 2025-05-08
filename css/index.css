@@ -7,6 +7,13 @@ body{
     font-family: "Arvo", serif;
 background-color:#2C2C2C;
 }
+@media (max-width:746px) {
+    .header{
+        width: 100%;
+    }
+    .box-todo{
+    }
+}
 .header{
     color: #FFFFFF;
     font-style: italic;
